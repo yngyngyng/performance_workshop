@@ -24,7 +24,7 @@ jobs:
       - name: Run Tests
         run: |
           set 6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_EXPORT=html-report.html 
-          ./k6 run ./foundations/01.basic.js --env BASE_URL="http://quickpizza:3333"
+          ./k6 run /foundations/01.basic.js --env BASE_URL="http://quickpizza:3333"
 
       - name: Upload Report
         uses: actions/upload-artifact@v4
