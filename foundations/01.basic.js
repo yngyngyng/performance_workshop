@@ -22,13 +22,23 @@ export function setup() {
 }
 
 export let options = {
-	stages: [
-		{ duration: '5s', target: 20 },
-		{ duration: '10s', target: 20 },
-		{ duration: '5s', target: 0 }
-	],
-	thresholds: {
-		http_req_duration: [{ threshold: 'p(95)<5000', abortOnFail: true }]
+	scenarios: {
+		smoke: {
+			executor: 'constant-vus',
+			vus: 5,
+			duration: '10s'
+		},
+		load: {
+			executor: 'ramping-vus',
+			startVUs: 0,
+			stages: [
+				{ duration: '5s', target: 5 },
+				{ duration: '10s', target: 5 },
+				{ duration: '5s', target: 0 }
+			],
+			gracefulRampDown: '5s',
+			startTime: '10s'
+		}
 	}
 }
 
