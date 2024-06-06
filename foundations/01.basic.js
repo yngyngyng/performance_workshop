@@ -2,6 +2,7 @@ import http from 'k6/http'
 import { sleep, check } from 'k6'
 import { SharedArray } from 'k6/data'
 import { Trend, Counter } from 'k6/metrics'
+import { getPizzaName } from './utils.js'
 
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:3333'
 
@@ -27,17 +28,6 @@ export let options = {
 			executor: 'constant-vus',
 			vus: 5,
 			duration: '10s'
-		},
-		load: {
-			executor: 'ramping-vus',
-			startVUs: 0,
-			stages: [
-				{ duration: '5s', target: 5 },
-				{ duration: '10s', target: 5 },
-				{ duration: '5s', target: 0 }
-			],
-			gracefulRampDown: '5s',
-			startTime: '10s'
 		}
 	}
 }
@@ -65,11 +55,7 @@ export default function () {
 	sleep(1)
 	pizzas.add(1)
 	ingredients.add(res.json().pizza.ingredients.length)
-	console.log(
-		`${res.json().pizza.name} (${
-			res.json().pizza.ingredients.length
-		} ingredients)`
-	)
+	console.log(`Pulled from utils: ${getPizzaName(res)}`)
 }
 
 export function handleSummary(data) {
